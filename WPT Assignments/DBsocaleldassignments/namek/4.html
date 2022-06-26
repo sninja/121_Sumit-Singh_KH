@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find area</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(() => {
+            $('#pin').blur(() => {
+                let input = { pin: $('#pin').val() }
+                let ajaxparams = {
+                    data: input,
+                    url: 'http://localhost:8081/getareaname',
+                    type: 'get',
+                    datatype: 'json',
+                    success: function (datafromserver) {
+                        console.log(datafromserver);
+                        if (datafromserver.status === true) {
+                            $('#area').val(datafromserver.detail.areaname);
+                            $('#msg').text("Area found");
+                        }
+                        else {
+                            $('#area').val("");
+                            $('#msg').text("Area not found");
+                        }
+                    },
+                    error: function (errorfromserver) {
+                        console.log("some error occurred" + errorfromserver);
+                    }
+                }
+
+                $.ajax(ajaxparams);
+            });
+
+            $('#update').click(() => {
+                let input = { pin: $('#pin').val(), areaname: $('#area').val() }
+                let ajaxparams = {
+                    data: input,
+                    url: 'http://localhost:8081/getareaname',
+                    type: 'get',
+                    datatype: 'json',
+                    success: function (datafromserver) {
+                        console.log(datafromserver);
+                        if (datafromserver.status === true) {
+                            $('#msg').text("Area name updated");
+                        }
+                        else {
+                            $('#area').val("");
+                            $('#msg').text("Area name not updated");
+                        }
+                    },
+                    error: function (errorfromserver) {
+                        console.log("some error occurred" + errorfromserver);
+                    }
+                }
+
+                $.ajax(ajaxparams);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <input type="number" id="pin" name="pin" placeholder="Pincode"><br><br>
+    <input type="text" id="area" name="area" placeholder="Area name"><br><br>
+    <input type="button" name="update" id="update" value="Update">
+    <span id="msg"></span>
+</body>
+
+</html>
