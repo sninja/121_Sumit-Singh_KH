@@ -1,0 +1,34 @@
+<html>
+
+<head>
+    <title>Account assignment</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(() => {
+
+            $("#acc").blur(() => {
+                console.log("Blur Event");
+                let input = { accno: $("#acc").val() };
+                let ajaxparams = {
+                    data: input,
+                    url: "http://localhost:8081/Accountdetails",
+                    type: 'get',
+                    datatype: "text",
+                    success: (datafound) => {
+                        if (datafound.status == true) { console.log("Success"); }
+                        $("#msg").html(datafound.data[0].balance);
+                    },
+                    error: (datanotfound) => { console.log("Failure"); }
+                };
+                $.ajax(ajaxparams);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <input type="text" id="acc" />
+    <span id="msg">Balance will be displayed here</span>
+</body>
+
+</html>
